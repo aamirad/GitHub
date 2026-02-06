@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+  <h2>Users</h2>
+  <form class="search" method="get">
+    <input type="text" name="q" placeholder="Search users" value="{{ query }}" />
+    <button type="submit">Search</button>
+  </form>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          {% set uac = user.userAccountControl.value if user.userAccountControl else 0 %}
+          {% set disabled = uac is number and (uac | int) & 2 %}
+          <tr>
+            <td>{{ user.displayName.value if user.displayName else user.cn.value }}</td>
+            <td>{{ user.sAMAccountName.value if user.sAMAccountName else "" }}</td>
+            <td>{{ user.mail.value if user.mail else "" }}</td>
+            <td>
+              {% if disabled %}
+                <span class="status bad">Disabled</span>
+              {% else %}
+                <span class="status good">Enabled</span>
+              {% endif %}
+            </td>
+            <td>
+              <form method="post" action="{{ url_for('enable_user', dn=user.entry_dn) }}" class="inline">
+                <button type="submit">Enable</button>
+              </form>
+              <form method="post" action="{{ url_for('disable_user', dn=user.entry_dn) }}" class="inline">
+                <button type="submit">Disable</button>
+              </form>
+              <form method="post" action="{{ url_for('reset_password', dn=user.entry_dn) }}" class="inline">
+                <input type="password" name="new_password" placeholder="New password" required />
+                <button type="submit">Reset</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="5" class="empty">No users found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

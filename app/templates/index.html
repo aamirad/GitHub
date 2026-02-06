@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card-grid">
+  <div class="card">
+    <h2>Directory Health</h2>
+    <p>Connect to LDAP/AD with your service account and maintain a secure audit trail.</p>
+    <ul>
+      <li>StartTLS or LDAPS support</li>
+      <li>Certificate verification controls</li>
+      <li>Audit logging to /var/log/aduc-web</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Users</h2>
+    <p>Search, enable/disable accounts, and reset passwords.</p>
+    <a class="button" href="{{ url_for('login') }}">Sign In</a>
+  </div>
+  <div class="card">
+    <h2>Groups</h2>
+    <p>Review groups and membership data from Active Directory.</p>
+    <a class="button" href="{{ url_for('login') }}">Sign In</a>
+  </div>
+</section>
+{% endblock %}

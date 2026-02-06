@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+  <h2>Groups</h2>
+  <form class="search" method="get">
+    <input type="text" name="q" placeholder="Search groups" value="{{ query }}" />
+    <button type="submit">Search</button>
+  </form>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Members</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for group in groups %}
+          <tr>
+            <td>{{ group.cn.value if group.cn else "" }}</td>
+            <td>{{ group.description.value if group.description else "" }}</td>
+            <td>{{ group.member | length if group.member else 0 }}</td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="3" class="empty">No groups found.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
